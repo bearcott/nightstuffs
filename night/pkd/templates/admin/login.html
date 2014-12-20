@@ -1,0 +1,18 @@
+{% extends 'admin/layout.html' %}
+{% block body %}
+	<div class="background"></div>
+	<div class="overlay"></div>
+	<button class="showclouds"></button>
+	<form class="login {%if error %} error {% endif %}" method="POST" action="">
+		<input class="top" type="text" name="user" placeholder="Username" autocomplete="off">
+		<input type="password" name="pass" placeholder="Password">
+		<button class="bottom" type="submit">Log in</button>
+		{%if error %}<div class="error">{{ error }}</div>{% endif %}
+	</form>
+	<!--
+	<form action="" method="POST" enctype="multipart/form-data">
+		<input type="file" name="file">
+		<button>SUBMIT IT YES HELL YES</button>
+	</form>
+	-->
+{% endblock %}

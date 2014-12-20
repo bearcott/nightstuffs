@@ -1,0 +1,32 @@
+{% extends 'layout.html' %}
+{% block head %}
+	<style>
+		{% for cat in categories %}
+			.category{{ cat['sname'] }}:hover { background-color: {{ cat['color'] }} !important; }
+		{% endfor %}
+	</style>
+{% endblock %}
+{% block body %}
+	<section class="archives">
+		<section class="content">
+			<h1>Archives</h1>
+			<div class="year">
+			{% for year in archives %}
+				<h2>{{ year }}</h2>
+				{% for month in archives[year][0] %}
+					<h3>{{ month }}</h3>
+					<ul>
+					{% for a in archives[year][0][month] %}
+						<li>
+							{{ a['date'] }} - 
+							<a href="{{ url_for('article', article=a['cname'], category=a['category']) }}">{{ a['name'] }}</a>
+							<a class="tag category{{ a['scategory'] }}" href="{{ url_for('category', category=a['category']) }}">{{a['category'] }}</a>
+						</li>
+					{% endfor %}
+					</ul>
+				{% endfor %}
+			{% endfor %}
+			</div>
+		</section>
+	</section>
+{% endblock %}

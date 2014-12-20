@@ -1,0 +1,21 @@
+{% extends 'admin/panel.html' %}
+{% block head %}
+	<script>
+		$POSTAUTHOR = "{{ url_for('requests', req='profile') }}"
+	</script>
+{% endblock %}
+{% block content %}
+	<section class="profile">
+		<div class="top">
+			<button class="fakefileinput">Upload Picture<input class="picdsubmit" type="file"></button>
+			<div class="profile picture" style="background-image: url({{ url_for('pics', set='authors', pic=user['pic']) }})"></div>
+			<input class="profileslider" type="range">
+			<div class="description">
+				<h1>{{ user['name'] }} ({{ user['user'] }}) id: {{ user['id'] }}</h1>
+				<p class="editp" data-id="{{ user['id'] }}">{{ user['desc'] }}</p>
+			</div>
+			<button class="editpsubmit">save</button>
+			<div class="clear"></div>
+		</div>
+	</section>
+{% endblock %}

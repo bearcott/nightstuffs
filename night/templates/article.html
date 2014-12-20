@@ -1,0 +1,192 @@
+{% extends 'layout.html' %}
+{% block head %}
+	<meta name="description" content="{{ article['desc'] }}">
+	<meta name="tags" content="{{ article['tags']|join(',') }}">
+	
+	<meta property="og:type" content="article">
+	<meta property="og:site_name" content="NightStuffs">
+	<meta property="og:title" content="{{ article['title'] }}">
+	{% if article['pic'] != '' and article['pic'] != None %}
+	<meta property="og:image" content="{{ [request.url_root,url_for('pics', pic=article['pic'], set='covers')]|join() }}">
+	{% endif %}
+	<meta property="og:description" content="{{ article['desc'] }}">
+	<meta property="article:tag" content="{{ article['tags']|join(',') }}">
+	<meta property="article:published_time" content="{{ article['date'] }}">
+	<meta property="article:section" content="{{ article['category'] }}">
+	<meta property="og:url" content="{{ request.url }}">
+
+	<script>
+		$COMMENT_URL = "{{ url_for('requests', req='comment') }}";
+	</script>
+	<style>
+		.category{{ article['scategory'] }}:hover { background-color: {{ article['color'] }} !important; }
+	</style>
+{% endblock %}
+{% block body %}
+<section class="content">
+	<section class="article" itemscope itemtype="http://schema.org/Article">
+		<article>
+			<!--THE FOLLOWING IS FOR RICH SNIPPETS-->
+			<div class="hide" itemprop="description">{{ article['desc'] }}</div>
+			<div class="hide" itemprop="keywords">{{ article['tags']|join(',') }}</div>
+			<div class="hide" itemprop="url">{{ request.url }}</div>
+			<div class="hide" itemprop="author">{{ author['name'] }}</div>
+			{% if article['pic'] != '' and article['pic'] != None %}
+			<div class="hide" itemprop="image">{{ [request.url_root,url_for('pics', pic=article['pic'], set='covers')]|join() }}</div>
+			<figure class="cover p" style="background-image: url({{ url_for('pics', pic=article['pic'], set='covers') }})">	
+				{% if article['picinfo'] != None %}
+				<figcaption>{{ article['picinfo']|safe }}</figcaption>
+				{% endif %}
+			</figure>
+			{% endif %}
+			<!-- END RICH SNIPPETS-->
+			<div class="content">
+				<div class="tagset topic">
+					<a href="{{ url_for('category', category=article['category']) }}" class="topic tag category{{ article['scategory'] }}">{{ article['category'] }}</a>
+					<a href="{{ url_for('article', article=article['ctitle'], category=article['category']) }}#comments"class="comments">{{ article['comment'] }}</a>
+					<h6>Written by <a href="{{ url_for('about') }}">{{ author['name'] }}</a> (Dam Dood) on <time pubdate itemprop="datePublished" itemprop="dateCreated">{{ article['date'] }}</time></h6>
+				</div>
+				<h1 itemprop="name" itemprop="headline">{{ article['title'] }}</h1>
+				{{ article['content']|safe }}
+				<!--
+				<div class="image"><img class="p" src="http://images.nationalgeographic.com/wpf/media-live/photos/000/086/cache/spitfire-lake-reflection_8628_990x742.jpg"></div>
+				-->
+				<div class="tagset tags">
+					<a href="https://www.facebook.com/sharer/sharer.php?u={{ request.url }}" class="tag share facebook"><i class="share facebook"></i>Share</a>
+					<a href="https://twitter.com/intent/tweet?text={{ article['title'] + ' ' + request.url + ' ' + '@NightStuffs' }}" class="tag share twitter"><i class="share twitter"></i>Tweet</a>
+					{% for tag in article['tags'] %}
+					<a href="{{ url_for('tags', tag=tag) }}" class="tag">{{ tag }}</a>
+					{% endfor %}
+					<div class="clear"></div>
+				</div>
+			</div>
+			<div class="right">
+				<div class="author">
+					<a href="{{ url_for('about') }}"><div class="pic" style="background-image: url({{ url_for('pics', set='authors', pic=author['pic']) }})"></div></a>
+					<div class="content box">
+						<h2>{{ author['name'] }}</h2>
+					</div>
+				</div>
+				<div class="social ribbon box">
+					<a href="https://www.facebook.com/NightStuffs" target="_blank"><i class="social facebook"></i></a>
+					<a href="https://twitter.com/nightstuffs" target="_blank"><i class="social twitter"></i></a>
+					<a href="{{ url_for('feed') }}" target="_blank"><i class="social rss"></i></a>
+				</div>
+			</div>
+		</article>
+		
+		<div class="about">
+			<a href="{{ url_for('about') }}"><div class="pic" style="background-image: url('{{ url_for('pics', set='authors', pic=author['pic']) }}')"></div></a>
+			<div class="content">
+			<h2>About The Author</h2>
+			<p>{{ author['desc'] }}</p>
+			</div>
+			<div class="clear"></div>
+		</div>
+		
+		{% if related != None %}
+		<div class="related">
+			<h2>Other things that might interest you</h2>
+			{% for piece in related %}
+				{% if piece['pic'] != '' and piece['pic'] != None %} 
+				<a href="{{ url_for('article', article=piece['cname'], category=piece['category']) }}">
+					<div class="piece cool" >
+						<div class="pic" style="background-image: url('{{ url_for('pics', set='covers', pic=piece['pic']) }}')"></div>
+						<h4>{{ piece['name'] }}</h4>
+					</div>
+				</a>
+				{% else %}
+				<a href="{{ url_for('article', article=piece['cname'], category=piece['category']) }}">
+					<div class="piece">
+						<h4>{{ piece['name'] }}</h4>
+					</div>
+				</a>
+				{% endif %}
+			{% endfor %}
+			<div class="clear"></div>
+		</div>
+		{% elif related == None and others != None %}
+		<div class="related">
+			{{ others }}
+			<h2>Other things that might interest you</h2>
+			{% for piece in others %}
+				{% if piece['pic'] != '' and piece['pic'] != None %} 
+				<a href="{{ url_for('article', article=piece['cname'], category=piece['category']) }}">
+					<div class="piece cool" >
+						<div class="pic" style="background-image: url('{{ url_for('pics', set='covers', pic=piece['pic']) }}')"></div>
+						<h4>{{ piece['name'] }}</h4>
+					</div>
+				</a>
+				{% else %}
+				<a href="{{ url_for('article', article=piece['cname'], category=piece['category']) }}">
+					<div class="piece">
+						<h4>{{ piece['name'] }}</h4>
+					</div>
+				</a>
+				{% endif %}
+			{% endfor %}
+		</div>
+		{% endif %}
+		
+		<section id="comments" class="comments">
+			<div class="top">
+				<h2>Discuss</h2>
+				<h6>({% if article['comment'] == 1 %}{{ article['comment'] }} comment{% else %}{{ article['comment'] }} comments{% endif %})</h6>
+				<div class="clear"></div>
+			</div>
+			<div class="commenter">
+				<div class="top">
+					<h3>Make a comment</h3>
+					<div class='input'>
+						<input type="text" placeholder="name" class="name">
+						<button>?</button>
+						<div class="warning">you will be identified by a gravatar identicon picture so please don't steal other people's names. Also, names will be capped at 60 characters.</div>
+					</div>
+					<div class='input'>
+						<input type="text" placeholder="email" class="email">
+						<button>?</button>
+						<div class="warning">Your email is used to render your identicon and <u>nothing</u> else! It will never be published.</div>
+					</div>
+					<div class="clear"></div>
+				</div>
+				<div class="clear"></div>
+				<textarea placeholder="comment here"></textarea>
+				<div class="alert"> chars remaining.</div>
+				<div class="preview"></div>
+				<div class="check"></div>
+				<div class="bottom">
+					<div class="replyto">
+						<h6>Replying to:</h6>
+						<h6 class="named"></h6>
+						<div class="pic"></div>
+					</div>
+					<button class="submit" data-id='{{ {"id":article["id"]}|tojson }}'>Submit</button>
+					<div class="clear"></div>
+				</div>
+			</div>
+			{% for comment in comments recursive %}
+			<div class="comment">
+				<div class="left">
+					<div class="profile" style="background-image: url('http://www.gravatar.com/avatar/{{ comment['email'] }}?d=identicon&f=y')"></div>
+				</div>
+				<div class="right">
+					<a class="reply" href="{{ request.url }}#comments" data-reply='{{ {"level":comment["level"], "parent":comment["id"], "email":comment["email"], "name":comment["name"]}|tojson }}'>reply</a>
+					<h6>on {{ comment['date'] }}, {{ comment['name'] }} said</h6>
+					<hr>
+					{{ comment['comment']|safe }}
+				</div>
+				<div class="clear"></div>
+				<div class="child">
+					{% if comment['child'] %}
+						{{ loop(comment['child']) }}
+					{% endif %}
+				</div>
+			</div>
+			{% else %}
+				<h2 class="nocomment">Don't be shy! Let your voice be heard!</h2>
+				
+			{% endfor %}
+		</section>
+	</section>
+</section>
+{% endblock %}

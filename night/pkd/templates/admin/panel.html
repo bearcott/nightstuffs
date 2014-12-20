@@ -1,0 +1,18 @@
+{% extends 'admin/layout.html' %}
+{% block body %}
+	<nav>
+		<div class="left">
+			<div class="profile" style="background-image: url({{ url_for('pics', set='authors', pic=user['pic']) }})"></div>
+			<h3>Hi, <b>{{ user['name'] }}</b>! (logged in as <b>{{ user['user'] }}</b>)</h3>
+		</div>
+		<ul>
+			<li><a href="{{ url_for('pkd.logout') }}">log out</a></li>
+			<li><a href="{{ url_for('pkd.profile') }}">My Profile</a></li>
+			<li><a href="{{ url_for('pkd.index') }}">Main Panel</a></li>
+		</ul>
+		<div class="clear">
+		</div>
+	</nav>
+	{% block content %}
+	{% endblock %}
+{% endblock %}

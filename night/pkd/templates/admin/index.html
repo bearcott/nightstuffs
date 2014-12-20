@@ -1,0 +1,32 @@
+{% extends 'admin/panel.html' %}
+{% block head %}
+{% endblock %}
+{% block content %}
+	<section class="main">
+		<section class="posts">
+			<a href="{{ url_for('pkd.new') }}"><button class="newpost">New Post</button></a>
+			{% for entry in results %}
+			<div class="post">
+				<a href="{{ url_for('pkd.edit', article=entry['title']) }}" class="cover" {% if entry['pic'] != None %}style="background-image: url({{ url_for('pics', pic=entry['pic'], set='covers') }})"{% endif %}>edit</a>
+				<div class="tagset topic">
+					<a href="{{ url_for('category', category=entry['category']) }}" target="_blank" class="topic tag">{{ entry['category'] }}</a>
+					<a href="{{ url_for('article', article=entry['ctitle'], category=entry['category']) }}#comments" target="_blank" class="tag topic">{{ entry['comments'] }} comments</a>
+					<h5>#{{ entry['id'] }} | <time pubdate>{{ entry['date'] }}</time> | </h5>
+					<a href="{{ url_for('about') }}" target="_blank">{{ entry['author'] }}</a>
+				</div>
+				<a href="{{ url_for('article', article=entry['ctitle'], category=entry['category']) }}" target="_blank" class="header"><h1>{{ entry['title'] }}</h1></a>
+				<div class="tagset">
+					{% for tag in entry['tags'] %}
+					<a href="{{ url_for('tags', tag=tag) }}" class="tag">{{ tag }}</a>
+					{% endfor %}
+					<div class="clear"></div>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="clear"></div>
+			{% endfor %}
+		</section>
+		<section class="modules">
+		</section>
+	</section>
+{% endblock %}

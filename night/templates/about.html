@@ -1,0 +1,42 @@
+{% extends 'layout.html' %}
+{% block body %}
+	<section class="about header" style="background-image: url('');">
+		<header>
+			<h1>about</h1>
+		</header>
+	</section>
+	<section class="about description">
+		<div class="content">
+			<h2 class="heading">Welcome to NightStuffs, home to interesting information from a few small-time bloggers to you!</h2>
+		</div>
+	</section>
+	<section class="about pictures">
+		<div class="picset">
+			{% for author in authors %}
+			<div class="pic" style="background-image: url({{ url_for('pics', set='authors', pic=author['pic']) }})">
+				<h3>{{ author['name'] }}</h3>
+				<div>
+					<p>
+						{{ author['desc'] }}
+					</p>
+				</div>
+			</div>
+			{% endfor %}
+		</div>
+	</section>
+	<section class="about nightclub">
+		<div class="content">
+			<h1 class="heading">About Us</h1>
+			<p>We are just a bunch of students whose nostalgia and connection with the past has led us on a journey to revive our childhood
+			passions. We love adventure and mischief is our number one talent. With our aspiriations, we hope to kindle recreation with 
+			favorite hobbies and forge a path to more productive living.</p>
+		</div>
+	</section>
+	<section class="about else">
+		<div class="content">
+			<h1 class="heading">Anything Else?</h1>
+			<p>For you web enthusiasts out there, this website was handbuilt from the top down (That's the way cool cats do it.)
+			and was made using Python's microframework, Flask. (proudly displayed at the footer of this site.) We're redditors too! Hello!</p>
+		</div>
+	</section>
+{% endblock %}

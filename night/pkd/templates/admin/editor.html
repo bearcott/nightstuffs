@@ -1,0 +1,126 @@
+{% extends 'admin/panel.html' %} 
+{% block head %}
+	<script>
+		$CONNECT_URL = "{{ url_for('requests', req='article') }}";
+		$POSTCATEGORY = "{{ url_for('requests', req='category') }}";
+		$UPLOAD_URL= "{{ url_for('requests', req='upload') }}";
+		$DELETE_URL = "{{ url_for('requests', req='delete_article') }}";
+		$HOME = "{{ url_for('pkd.index') }}";
+		{% if new == True %}{{ '$NEW = true' }}{% else %}{{ '$NEW = false; $ID = %s' % (article['id']) }}{% endif %}
+	</script>
+	<script type="text/javascript" src="{{ url_for('pkd.static', filename='Markdown.Converter.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('pkd.static', filename='Markdown.Sanitizer.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('pkd.static', filename='Markdown.Editor.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('pkd.static', filename='Markdown.Extra.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('pkd.static', filename='spectrum.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('pkd.static', filename='StackBlur.js') }}"></script>
+	<link href="{{ url_for('pkd.static', filename='spectrum.css') }}" type="text/css" rel="stylesheet">
+	<script type="text/javascript" src="{{ url_for('pkd.static', filename='tabby.min.js') }}"></script>
+{% endblock %}
+{% block content %}
+	{% if not article %}{% set article = None %}{% set author = None %}{% endif %}
+	<section class="editor">
+		<section class="top">
+			<b>ID </b><p>{{ article['id'] }}</p><b>Date </b><p>{% if article['date'] %}{{ article['date'] }}{% else %}{{ date }}{% endif %}</p>
+			<b>Author</b><p>{% if article == None %}{{ user['name'] }}{% else %}{{ author['name'] }}{% endif %}</p>
+			<b>Title</b><input name="title" placeholder="title" value="{{ article['title'] }}" autocomplete="off">
+			<div class="clear"></div>
+			<b>Category</b>
+			<select class="category">
+				{% for cat in category %}
+					{% if cat['name'] == article['category'] %}
+						<option selected="selected">{{ cat['name'] }}</option>
+					{% else %}
+						<option>{{ cat['name'] }}</option>
+					{% endif %}
+				{% endfor %}
+				<option class="new">----New Category----</option>
+			</select>
+			<b>Tags</b><input name="tags" placeholder="tags" value="{{ article['tags']|join(',') }}">
+			<button class="fakepic">Cover Picture
+				<input name="pic" class="pic" type="file">
+			</button>
+			<input name="picdesc" placeholder="pic credss" value="{{ article['picinfo'] }}">
+			<button class="delete"></button>
+		</section>
+		<div class="wmd-panel">
+			<button class="pull"></button>
+			<div class="left">
+				<textarea name="desc" class="desc" placeholder="description">{{ article['desc'] }}</textarea>
+				<div id="wmd-button-bar">
+					<button class="uploadpic">Upload a pic</button>
+				</div>
+				<textarea name="content" class="wmd-input" id="wmd-input" placeholder="content goes here">{{ article['text'] }}</textarea>
+				<div class="clear"></div>
+			</div>
+			<div class="right">
+				<div {% if article != None and article['pic'] != None and article['pic'] != '' %}class="coverpic haspic" style="background-image: url({{ url_for('pics', pic=article['pic'], set='covers') }})"{% else %}class="coverpic"{% endif %}>
+					<button class="deletecover"></button>
+				</div>
+				{% if article == None %}
+				<div class="tagset topic">
+					<a class="topic tag">Topic</a>
+					<a class="comments">99</a>
+					<h6>Written by {{ user['name'] }}</a> on <time pubdate>{{ date }}</time></h6>
+				</div>
+				{% else %}
+				<div class="tagset topic">
+					<a class="topic tag">{{ article['category'] }}</a>
+					<a href="{{ url_for('article', article=article['ctitle'], category=article['category']) }}#comments" target="_blank" class="comments">{{ article['comment'] }}</a>
+					<h6>Written by <a href="{{ url_for('about') }}">{{ author['name'] }}</a> on <time pubdate>{{ article['date'] }}</time></h6>
+				</div>
+				{% endif %}
+				<div class="article">
+					<h1></h1>
+				</div>
+				<article id="wmd-preview" class="wmd-preview"></article>
+				<div class="clear"></div>
+			</div>
+		</div>
+		<div class="clear"></div>
+		<div class="submit">
+			<button type="submit" class="loadarticle">Load Local Draft</button>
+			<button type="submit" class="savearticle">Save Local Draft</button>
+			<button type="submit" class="submitarticle">{% if new %}Create New Article{% else %}Update Article{% endif %}</button>
+		</div>
+	</section>
+	<div class="modal">
+		<div class="back"></div>
+		<div class="diag">
+			<div class="category">
+				<h1>New Category</h1>
+				<h5>Name: </h5><input class="category input">
+				<h5>Pic: </h5><input class="categorypic" type="File">
+				<p>Please only pick <u>dark</u> colors! (light colors are hard to read on)</p>
+				<h5>Description: </h5><textarea class="categorydesc input"></textarea>
+				<h5>Color: </h5><input class="categorycolor">
+				<canvas id="bullshitid"></canvas>
+				<div class="showpic"></div>
+				<button class="submitcategory">Make New Category</button>
+			</div>
+			<div class="uploadpictures">
+				<h1>Upload a picture.</h1>
+				<div class="uptop">
+					<div class="left">
+						<h2>From URL</h2>
+						<input class="uploadimageurl" type="text">
+					</div>
+					<div class="right">
+						<h2>From file</h2>
+						<input class="uploadimagefile" type="file">
+					</div>
+					<div class="clear"></div>
+					<div class="submit">
+						<h3>Give it a name</h3>
+						<input type="text" placeholder="be descriptive as possible!"> 
+						<div class="left"><img src=''></div>
+						<button>UPLOAD PICTURE</button>
+						<div class="clear"></div>
+					</div>
+				</div>
+				<h2>Uploaded pictures will appear below.</h2>
+				<div class="uploaded"></div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

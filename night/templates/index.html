@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+{% from 'layout.html' import post %}
+{% block head %}
+	<style>
+		{% for cat in categories %}
+			.category{{ cat['sname'] }}:hover { background-color: {{ cat['color'] }} !important; }
+		{% endfor %}
+	</style>
+	<script>
+		$POSTURL = "{{ url_for('requests', req='posts') }}";
+		$NUM_ARTICLES = "{{ na[0] }}";
+		$NUM_NEW = "{{ na[1] }}";
+		$POSTARGS = "{{ args }}";
+	</script>
+{% endblock %}
+{% block body %}
+<section class="content">
+	<section class="modules">
+		<div class="taggin">
+		<h2>Tags</h2>
+		<hr/>
+		{% for tag in tags %}
+			<a class="{{ tag['count'] }} tag" href="{{ url_for('tags', tag=tag['name']) }}">{{ tag['name'] }}</a>
+		{% endfor %}
+		<div class="clear"></div>
+		</div>
+	</section>
+	<section class="posts">
+	{% if amount == False %}
+		{% for entry in results %}
+			{{ post(entry=entry) }}
+		{% endfor %}
+		<div class="newposts"></div>
+		<button class="loadnewposts">Load more posts</button>
+	{% else %}
+		<h4>No articles here. :(</h4>
+	{% endif %}
+	</section>
+</section>
+{% endblock %}

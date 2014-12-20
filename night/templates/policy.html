@@ -1,0 +1,28 @@
+{% extends 'layout.html' %}
+{% block body %}
+<section class="policy">
+	<div class="content">
+		<h1>DMCA</h1>
+		<p>We're sorry if we took your stuff! If you feel that your content has been published on this site without your permission, please take note that we (<a href="{{ url_for('index') }}">NightStuffs.com</a>) will 
+		comply fully with a <i>valid</i> DMCA notice, please read before writing a DMCA notice:</p>
+
+		<ul>
+			<li>Provide with the DMCA request, a verifiable email address and optionally a phone number. </li>
+			<li>Please write a valid DMCA notice to <a href="mailto:monkey@nightstuffs.com" target="_blank">monkey@nightstuffs.com</a> following the format below:</li>
+			<ul>
+				<li>Provide reasonable proof that you are, or your company is, the copyright holder of the content.</li> 
+				<li>Provide the exact URLs to the copyrighted content. </li> 
+				<li>Provide the complete name(s) of the copyrighted content. </li> 
+				<li>Read and include the following statement: 
+				<blockquote><i>I have a good faith belief that use of the copyrighted materials described above 
+				as allegedly infringing is not authorized by the copyright owner, its agent, or the law. I swear, under penalty of perjury, 
+				that the information in the notification is accurate and that I am the copyright owner or am authorized to act on behalf of 
+				the owner of an exclusive right that is allegedly infringed.</i></blockquote>
+				</li>
+			</ul>
+			<li>You will be liable for damages (including costs and attorneys' fees) for false DMCA notices.</li>
+		</ul>
+		<p>Thank you! We will definitely get back to you after the above steps are considered.</p>
+	</div>
+</section>
+{% endblock %}
