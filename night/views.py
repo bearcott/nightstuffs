@@ -113,7 +113,7 @@ def archives():
 		q[v[0]].append(s)
 	#FIN~
 	
-	return render_template('archives.html', categories=get_category(), archives=q, hidden=True)
+	return render_template('archives.html', categories=get_category(), archives=q)
 
 @app.route('/<category>/', defaults={'article':None})
 @app.route('/<category>/<path:article>')
@@ -155,7 +155,7 @@ def article(category=None, article=None):
 	comments = commentsorter.popcomments(comments)
 	
 	#output everything
-	return render_template('article.html', hidden=True, categories=get_category(), article=results[0], title=results[0]['title'], author=author[0], related=related, others=others, comments=comments)
+	return render_template('article.html', categories=get_category(), article=results[0], title=results[0]['title'], author=author[0], related=related, others=others, comments=comments)
 
 
 #ATOM POSTS
@@ -171,23 +171,23 @@ def categoryfeed(category=None):
 def about():
 	#get authors
 	authors = (dict(name=row[0],pic=row[1],desc=row[2]) for row in query_db('SELECT Name, Picture, Description FROM users'))
-	return render_template('about.html', hidden=True, categories=get_category(), authors=authors)
+	return render_template('about.html', categories=get_category(), authors=authors)
 
 @app.route('/projects')
 def projects():
-	return render_template('projects.html', categories=get_category(), hidden=True)
+	return render_template('projects.html', categories=get_category())
 
 @app.route('/contact')
 def contact():
-	return render_template('contact.html', categories=get_category(), hidden=True)
+	return render_template('contact.html', categories=get_category())
 	
 @app.route('/privacy')
 def privacy():
-	return render_template('privacy.html', categories=get_category(), hidden=True)
+	return render_template('privacy.html', categories=get_category())
 
 @app.route('/policy')
 def policy():
-	return render_template('policy.html', categories=get_category(), hidden=True)
+	return render_template('policy.html', categories=get_category())
 	
 @app.errorhandler(404)
 def fof(e):

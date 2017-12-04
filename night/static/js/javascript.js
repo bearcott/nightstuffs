@@ -1,6 +1,6 @@
-	function log(sdfs) {
-		window.console.log(sdfs);
-	}
+function log(sdfs) {
+	window.console.log(sdfs);
+}
 
 $(document).ready(function() {
 	$('img').hide().load(function() {

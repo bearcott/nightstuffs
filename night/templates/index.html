@@ -3,7 +3,7 @@
 {% block head %}
 	<style>
 		{% for cat in categories %}
-			.category{{ cat['sname'] }}:hover { background-color: {{ cat['color'] }} !important; }
+			.category{{ cat['sname'] }} { background-color: {{ cat['color'] }} !important; }
 		{% endfor %}
 	</style>
 	<script>

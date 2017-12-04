@@ -1,2 +1,4 @@
 venv
 *.pyc
+bower_components
+.DS_Store

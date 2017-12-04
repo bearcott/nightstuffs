@@ -19,10 +19,15 @@
 		$COMMENT_URL = "{{ url_for('requests', req='comment') }}";
 	</script>
 	<style>
-		.category{{ article['scategory'] }}:hover { background-color: {{ article['color'] }} !important; }
+		.category{{ article['scategory'] }}:hover {
+			background-color: {{ article['color'] }} !important; 
+		}
 	</style>
 {% endblock %}
 {% block body %}
+{# Linking to author
+	<a href="https://plus.google.com/u/2/115267345472496815926?rel=author"></a>
+#}
 <section class="content">
 	<section class="article" itemscope itemtype="http://schema.org/Article">
 		<article>
@@ -43,7 +48,7 @@
 			<div class="content">
 				<div class="tagset topic">
 					<a href="{{ url_for('category', category=article['category']) }}" class="topic tag category{{ article['scategory'] }}">{{ article['category'] }}</a>
-					<a href="{{ url_for('article', article=article['ctitle'], category=article['category']) }}#comments"class="comments">{{ article['comment'] }}</a>
+					<a href="{{ url_for('article', article=article['ctitle'], category=article['category']) }}#comments"class="comments ion ion-ios-chatbubble">{{ article['comment'] }}</a>
 					<h6>Written by <a href="{{ url_for('about') }}">{{ author['name'] }}</a> (Dam Dood) on <time pubdate itemprop="datePublished" itemprop="dateCreated">{{ article['date'] }}</time></h6>
 				</div>
 				<h1 itemprop="name" itemprop="headline">{{ article['title'] }}</h1>
