@@ -2,7 +2,7 @@
 <head>
 	<title>PKD</title>
 	<link href="{{ url_for('pkd.static', filename='style.css') }}" rel="stylesheet" type="text/css">
-	<script src="{{ url_for('static', filename='jquery.min.js') }}"></script>
+	<script src="{{ url_for('pkd.static', filename='jquery.min.js') }}"></script>
 	{% block head %}
 	{% endblock %}
 	<script src="{{ url_for('pkd.static', filename='javascript.js') }}"></script>
